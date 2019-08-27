@@ -11,6 +11,7 @@ import java.sql.Time;
 import java.util.List;
 
 @RestController
+@RequestMapping("/time-entries")
 public class TimeEntryController {
 
     public TimeEntryRepository repo;
@@ -18,14 +19,14 @@ public class TimeEntryController {
         this.repo = timeEntryRepository;
     }
 
-    @PostMapping("/time-entries")
+    @PostMapping
     public ResponseEntity create(@RequestBody TimeEntry timeEntryToCreate) {
         TimeEntry timeEntry = this.repo.create(timeEntryToCreate);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(timeEntry);
     }
 
-    @PutMapping("/time-entries/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable("id") long timeEntryId, @RequestBody TimeEntry expected) {
         TimeEntry timeEntry = this.repo.update(timeEntryId, expected);
         if (timeEntry != null) {
@@ -34,13 +35,13 @@ public class TimeEntryController {
         return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    @DeleteMapping("/time-entries/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable("id") long timeEntryId) {
         this.repo.delete(timeEntryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
-    @GetMapping("/time-entries/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<TimeEntry> read(@PathVariable("id") long timeEntryId) {
         TimeEntry timeEntry = this.repo.find(timeEntryId);
         if (timeEntry != null) {
@@ -49,7 +50,7 @@ public class TimeEntryController {
         return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/time-entries")
+    @GetMapping
     public ResponseEntity<List<TimeEntry>> list() {
         return ResponseEntity.status(HttpStatus.OK).body(this.repo.list());
     }

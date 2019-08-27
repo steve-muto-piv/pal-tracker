@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryTimeEntryRepository implements  TimeEntryRepository{
 
-    private Map<Long, TimeEntry> store = new HashMap<>();
+    private Map<Long, TimeEntry> store = new ConcurrentHashMap<Long, TimeEntry>();
     private long counter = 1L;
 
     public TimeEntry create(TimeEntry timeEntry) {
