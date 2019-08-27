@@ -5,15 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class InMemoryTimeEntryRepository implements  TimeEntryRepository{
 
     private Map<Long, TimeEntry> store = new ConcurrentHashMap<Long, TimeEntry>();
-    private long counter = 1L;
+    private AtomicLong counter = new AtomicLong(1L);
 
     public TimeEntry create(TimeEntry timeEntry) {
 
-        timeEntry = new TimeEntry(this.counter++, timeEntry.getProjectId(), timeEntry.getUserId(), timeEntry.getDate(), timeEntry.getHours());
+        timeEntry = new TimeEntry(this.counter.getAndIncrement(), timeEntry.getProjectId(), timeEntry.getUserId(), timeEntry.getDate(), timeEntry.getHours());
 
         this.store.put(timeEntry.getId(), timeEntry);
         return timeEntry;
